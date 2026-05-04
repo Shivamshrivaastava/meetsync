@@ -37,17 +37,17 @@ const MeetingCard = ({ meeting, onClick, onViewDetails }) => {
   };
 
   return (
-    <div className="bg-white backdrop-blur-lg border border-gray-200 rounded-xl p-6 cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 relative overflow-hidden" onClick={() => onViewDetails(meeting._id)}>
-      <div className="flex justify-between items-start mb-4">
+    <div className="bg-white border border-slate-200 rounded-lg p-5 cursor-pointer transition-all duration-300 hover:border-blue-300 hover:shadow-md hover:bg-slate-50 relative overflow-hidden shadow-xs group" onClick={() => onViewDetails(meeting._id)}>
+      <div className="flex justify-between items-start mb-3">
         <div className="flex-1">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2 leading-tight">{meeting.title}</h3>
-          <div className="flex items-center text-sm text-gray-500 gap-4">
+          <h3 className="text-base font-semibold text-slate-900 mb-2 leading-snug group-hover:text-blue-700 transition-colors line-clamp-2">{meeting.title}</h3>
+          <div className="flex items-center text-xs text-slate-500 gap-3">
             <div className="flex items-center">
-              <Calendar className="w-4 h-4 mr-1 text-gray-400" />
+              <Calendar className="w-3.5 h-3.5 mr-1 text-slate-400" />
               {formatDate(meeting.date)}
             </div>
             <div className="flex items-center">
-              <Clock className="w-4 h-4 mr-1 text-gray-400" />
+              <Clock className="w-3.5 h-3.5 mr-1 text-slate-400" />
               {new Date(meeting.date).toLocaleTimeString('en-US', {
                 hour: '2-digit',
                 minute: '2-digit',
@@ -55,23 +55,23 @@ const MeetingCard = ({ meeting, onClick, onViewDetails }) => {
             </div>
           </div>
         </div>
-        <ChevronRight className="w-5 h-5 text-gray-400 transition-colors" />
+        <ChevronRight className="w-5 h-5 text-slate-300 transition-all group-hover:text-blue-600 group-hover:translate-x-0.5" />
       </div>
 
-      <div className="mb-4 text-gray-700 leading-relaxed line-clamp-3">{meeting.summary}</div>
+      <div className="mb-3 text-slate-700 leading-relaxed line-clamp-2 text-sm">{meeting.summary}</div>
 
       {meeting.keyPoints && meeting.keyPoints.length > 0 && (
-        <div className="mb-4">
-          <h4 className="text-sm font-medium text-gray-900 mb-2">Key Points:</h4>
-          <ul className="text-sm text-gray-600 list-none">
+        <div className="mb-3">
+          <h4 className="text-xs font-semibold text-slate-900 mb-2 uppercase tracking-wide">Key Points:</h4>
+          <ul className="text-xs text-slate-600 list-none space-y-1">
             {meeting.keyPoints.slice(0, 2).map((point, index) => (
-              <li key={index} className="flex items-start mb-1">
-                <span className="text-blue-600 mr-2">•</span>
-                <span className="line-clamp-2">{point}</span>
+              <li key={index} className="flex items-start gap-2">
+                <span className="text-blue-600 flex-shrink-0">•</span>
+                <span className="line-clamp-1">{point}</span>
               </li>
             ))}
             {meeting.keyPoints.length > 2 && (
-              <li className="text-gray-400 italic">
+              <li className="text-slate-400 text-xs">
                 +{meeting.keyPoints.length - 2} more points
               </li>
             )}
@@ -79,44 +79,49 @@ const MeetingCard = ({ meeting, onClick, onViewDetails }) => {
         </div>
       )}
 
-      <div className="flex flex-wrap gap-2 mb-4">
-        {meeting.tags && meeting.tags.map((tag, index) => (
+      <div className="flex flex-wrap gap-1.5 mb-3">
+        {meeting.tags && meeting.tags.slice(0, 3).map((tag, index) => (
           <span
             key={index}
-            className={`px-2 py-1 text-xs font-medium rounded-full ${getTagColor(tag)}`}
+            className={`px-2 py-1 text-xs font-medium rounded-md ${getTagColor(tag)}`}
           >
             {tag}
           </span>
         ))}
+        {meeting.tags && meeting.tags.length > 3 && (
+          <span className="px-2 py-1 text-xs font-medium text-slate-600 bg-slate-100 rounded-md">
+            +{meeting.tags.length - 3}
+          </span>
+        )}
       </div>
 
-      <div className="grid grid-cols-3 gap-4 text-sm text-center">
+      <div className="flex gap-3 text-xs">
         {meeting.deadlines && meeting.deadlines.length > 0 && (
-          <div className="text-center">
-            <div className="font-semibold mb-1 text-red-600">{meeting.deadlines.length}</div>
-            <div className="text-gray-600">Deadlines</div>
+          <div className="flex-1 bg-red-50 rounded-md p-2 text-center">
+            <div className="font-semibold text-red-600">{meeting.deadlines.length}</div>
+            <div className="text-red-600 text-xs">Deadlines</div>
           </div>
         )}
         {meeting.opportunities && meeting.opportunities.length > 0 && (
-          <div className="text-center">
-            <div className="font-semibold mb-1 text-green-600">{meeting.opportunities.length}</div>
-            <div className="text-gray-600">Opportunities</div>
+          <div className="flex-1 bg-green-50 rounded-md p-2 text-center">
+            <div className="font-semibold text-green-600">{meeting.opportunities.length}</div>
+            <div className="text-green-600 text-xs">Opportunities</div>
           </div>
         )}
         {meeting.actionItems && meeting.actionItems.length > 0 && (
-          <div className="text-center">
-            <div className="font-semibold mb-1 text-blue-600">{meeting.actionItems.length}</div>
-            <div className="text-gray-600">Action Items</div>
+          <div className="flex-1 bg-blue-50 rounded-md p-2 text-center">
+            <div className="font-semibold text-blue-600">{meeting.actionItems.length}</div>
+            <div className="text-blue-600 text-xs">Actions</div>
           </div>
         )}
       </div>
 
       {meeting.opportunities && meeting.opportunities.length > 0 && (
-        <div className="mt-4 pt-4 border-t border-gray-200">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-900">Top Opportunity:</span>
-            <span className={`px-2 py-1 text-xs font-medium rounded-full border ${getPriorityColor(meeting.opportunities[0].priority)}`}>
-              {meeting.opportunities[0].title}
+        <div className="mt-3 pt-3 border-t border-slate-200">
+          <div className="flex items-start justify-between gap-2">
+            <span className="text-xs font-semibold text-slate-700 text-left">Top Opp.:</span>
+            <span className={`px-2 py-0.5 text-xs font-medium rounded-md text-right ${getPriorityColor(meeting.opportunities[0].priority)}`}>
+              {meeting.opportunities[0].title.substring(0, 20)}...
             </span>
           </div>
         </div>
